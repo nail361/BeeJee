@@ -37,6 +37,9 @@ const Loader = () => {
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks,
+    totalTaskCount: state.totalTaskCount,
+    pageSize: state.pageSize,
+    curPage: state.curPage,
   };
 };
 
@@ -50,21 +53,12 @@ export class App extends PureComponent {
     };
 
     this.onAddTask = this.onAddTask.bind(this);
-    this.onRemoveTask = this.onRemoveTask.bind(this);
     this.showMsg = this.showMsg.bind(this);
   }
 
-  componentDidMount() {
-    // useDispatch(actions.resetGame);
-  }
-
   onAddTask() {
-    const { addTask } = this.props;
-    addTask();
-  }
-
-  onRemoveTask() {
-    //
+    const { addTasks } = this.props;
+    addTasks();
   }
 
   showMsg() {
@@ -98,7 +92,7 @@ export class App extends PureComponent {
     }
 
     return (
-      <div>
+      <div className="root-wrapper">
         {(showError || showSuccess)
           && ReactDOM.createPortal(
             <Modal>
@@ -110,7 +104,7 @@ export class App extends PureComponent {
           )}
         <div className="task-wrapper">
           <Suspense fallback={<Loader />}>
-            <TaskList tasks={tasks} />
+            <TaskList {...this.props} />
           </Suspense>
         </div>
         <div className="button-wrapper">
@@ -133,10 +127,6 @@ export default connect(
 )(App);
 
 App.propTypes = {
-  tasks: PropTypes.arrayOf(PropTypes.object),
-  addTask: PropTypes.func.isRequired,
-};
-
-App.defaultProps = {
-  tasks: [],
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  addTasks: PropTypes.func.isRequired,
 };

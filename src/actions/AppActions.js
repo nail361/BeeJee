@@ -1,19 +1,31 @@
 import * as types from './ActionTypes';
 
-export function addTask() {
+export function addTasks(tasks, tasksLength) {
   return {
-    type: types.ADD_TASK,
+    type: types.ADD_TASKS,
+    tasks,
+    tasksLength,
   };
 }
 
-export function removeTask() {
+export function removeTask(taskId) {
   return {
     type: types.REMOVE_TASK,
+    taskId,
   };
 }
 
-export function changeStatus() {
+export function changeStatus(taskId, status) {
   return {
     type: types.CHANGE_STATUS,
+    taskId,
+    status,
+  };
+}
+
+export function changePage(page) {
+  return {
+    type: types.CHANGE_PAGE,
+    page,
   };
 }

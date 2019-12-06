@@ -1,23 +1,75 @@
-const sendCompleteData = async (code) => {
-  const url = `http://188.225.46.145/statistic.php?code=${code}`;
+const developerName = 'Denis';
+
+export const getTasks = async (sortField, sortDirection, page) => {
+  return {
+    status: 'ok',
+    message: {
+      tasks: [
+        {
+          id: 1,
+          username: 'Test User1',
+          email: 'test_user_1@example.com',
+          text: 'Hello, world!',
+          status: 10,
+        },
+        {
+          id: 2,
+          username: 'Test User2',
+          email: 'test_user_1@example.com',
+          text: 'Hello, world!',
+          status: 0,
+        },
+        {
+          id: 3,
+          username: 'Test User3',
+          email: 'test_user_1@example.com',
+          text: 'Hello, world!',
+          status: 0,
+        },
+      ],
+      total_task_count: 10,
+    },
+  };
+
+  const url = `https://uxcandy.com/~shapoval/test-task-backend/v2/?\
+developer=${developerName}&\
+sort_field=${sortField}&\
+sort_direction=${sortDirection}&\
+page=${page}`;
 
   try {
     const response = await fetch(url, {
       method: 'GET',
-      mode: 'no-cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      redirect: 'follow',
-      referrer: 'no-referrer',
     });
     await response;
-    return 'OK';
+    return response.json();
   } catch (error) {
     console.log(error);
   }
 };
 
-export default sendCompleteData;
+export const addTask = async (data) => {
+  const url = `https://uxcandy.com/~shapoval/test-task-backend/v2/create?developer=${developerName}`;
+  const formData = new FormData();
+
+  Object.keys(data).forEach((key) => {
+    formData.append(key, data[key]);
+  });
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formData,
+    });
+    await response;
+    return response.json();
+  } catch (error) {
+    console.log(error);
+  }
+};

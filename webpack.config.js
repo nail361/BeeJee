@@ -2,6 +2,7 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = (env, options) => {
@@ -16,6 +17,13 @@ module.exports = (env, options) => {
       chunkFilename: 'css/[id].css',
       ignoreOrder: false,
     }),
+    new CopyPlugin([
+      {
+        from: './src/manifest.json',
+        to: '[name].[ext]',
+        force: true,
+      },
+    ]),
   ];
 
   if (!isDevBuild) customPlugins.push(new CleanWebpackPlugin());
