@@ -8,13 +8,6 @@ export function addTasks(tasks, tasksLength) {
   };
 }
 
-export function removeTask(taskId) {
-  return {
-    type: types.REMOVE_TASK,
-    taskId,
-  };
-}
-
 export function changeStatus(taskId, status) {
   return {
     type: types.CHANGE_STATUS,

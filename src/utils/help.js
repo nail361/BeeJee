@@ -62,9 +62,6 @@ export const addTask = async (data) => {
   try {
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
       body: formData,
     });
     await response;
@@ -72,4 +69,18 @@ export const addTask = async (data) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const validateEmail = (mail) => {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) return true;
+  return false;
+};
+
+export const safeText = (text) => {
+  return text.replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27')
+    .replace(/\//g, '&#x2F');
 };

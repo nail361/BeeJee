@@ -1,0 +1,33 @@
+.add-task-modal{
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.add-task-window{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: white;
+    text-align: center;
+    height: 140px;
+    width: 220px;
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.2);
+
+    input{
+        margin-bottom: 5px;
+
+        &.error{
+            border-color: red;
+        }
+    }
+
+    button{
+        margin-top: 5px;
+    }
+}

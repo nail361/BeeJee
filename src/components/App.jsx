@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/AppActions';
 import Modal from './Modal';
+import AddTaskModal from './AddTaskModal';
 import '../styles/App.scss';
 
-import sendCompleteData from '../utils/help';
+import { addTask } from '../utils/help';
 
 const TaskList = React.lazy(() => import('./TaskList'));
 
@@ -48,27 +49,65 @@ export class App extends PureComponent {
     super(props);
 
     this.state = {
+      isLoading: false,
       showError: false,
       showSuccess: false,
+      showAddTask: false,
     };
 
     this.onAddTask = this.onAddTask.bind(this);
     this.showMsg = this.showMsg.bind(this);
+    this.openAddTaskWindow = this.openAddTaskWindow.bind(this);
+    this.closeAddTaskWindow = this.closeAddTaskWindow.bind(this);
   }
 
-  onAddTask() {
-    const { addTasks } = this.props;
-    addTasks();
-  }
-
-  showMsg() {
+  onAddTask(name, email, text) {
     this.setState({
-      showSuccess: true,
+      isLoading: true,
+    });
+    addTask({
+      username: name,
+      email,
+      text,
+    }).then((data) => {
+      if (data.status === 'ok') {
+        this.showMsg('showSuccess');
+      } else {
+        this.showMsg('showError');
+      }
+      this.setState({
+        isLoading: false,
+      });
+    }).catch((error) => {
+      this.showMsg('showError');
+      this.setState({
+        isLoading: false,
+      });
+    });
+  }
+
+  openAddTaskWindow() {
+    this.changeStateAddTask(true);
+  }
+
+  closeAddTaskWindow() {
+    this.changeStateAddTask(false);
+  }
+
+  changeStateAddTask(flag) {
+    this.setState({
+      showAddTask: flag,
+    });
+  }
+
+  showMsg(type) {
+    this.setState({
+      [type]: true,
     });
 
     setTimeout(() => {
       this.setState({
-        showSuccess: false,
+        [type]: false,
       });
     }, 2000);
   }
@@ -77,14 +116,16 @@ export class App extends PureComponent {
     const { tasks } = this.props;
 
     const {
+      isLoading,
       showError,
       showSuccess,
+      showAddTask,
     } = this.state;
 
     let resultText = '';
     let resultClass = '';
     if (showError) {
-      resultText = <span>Ошибка сервера.<br />Повторите попытку.</span>;
+      resultText = <span>Ошибка.<br />Повторите попытку.</span>;
       resultClass = 'error';
     } else if (showSuccess) {
       resultText = <span>Успех!<br />Задача добавлена</span>;
@@ -93,6 +134,11 @@ export class App extends PureComponent {
 
     return (
       <div className="root-wrapper">
+        {isLoading
+          && ReactDOM.createPortal(
+            <Loader />,
+            modalRoot,
+          )}
         {(showError || showSuccess)
           && ReactDOM.createPortal(
             <Modal>
@@ -100,6 +146,11 @@ export class App extends PureComponent {
                 {resultText}
               </div>
             </Modal>,
+            modalRoot,
+          )}
+        {showAddTask
+          && ReactDOM.createPortal(
+            <AddTaskModal addTask={this.onAddTask} close={this.closeAddTaskWindow} />,
             modalRoot,
           )}
         <div className="task-wrapper">
@@ -111,7 +162,7 @@ export class App extends PureComponent {
           <button
             className="add-task-btn"
             type="button"
-            onClick={this.onAddTask}
+            onClick={this.openAddTaskWindow}
           >
             Добавить задачу
           </button>
@@ -128,5 +179,4 @@ export default connect(
 
 App.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  addTasks: PropTypes.func.isRequired,
 };

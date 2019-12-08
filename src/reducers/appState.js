@@ -12,26 +12,12 @@ export default function tasks(state = initialState, action) {
   case types.ADD_TASKS:
     return {
       tasks: [
-        ...state.tasks,
         ...action.tasks,
       ],
       totalTaskCount: action.tasksLength,
       pageSize: state.pageSize,
       curPage: state.curPage,
     };
-  case types.REMOVE_TASK:
-    return {
-      ...state,
-      tasks: [
-        ...state.tasks.filter((task) => task.id !== action.taskId),
-      ],
-      totalTaskCount: state.totalTaskCount - 1,
-    };
-  case types.CHANGE_STATUS:
-    return {
-      //
-    };
-
   case types.CHANGE_PAGE:
     return {
       ...state,

@@ -8,8 +8,6 @@ import '../styles/Tasks.scss';
 export class TaskList extends PureComponent {
   constructor(props) {
     super(props);
-
-    this.removeItem = this.removeItem.bind(this);
   }
 
   componentDidMount() {
@@ -21,11 +19,6 @@ export class TaskList extends PureComponent {
         addTasks(data.message.tasks, data.message.total_task_count);
       }
     }).catch((error) => console.error(error));
-  }
-
-  removeItem(id) {
-    const { removeTask } = this.props;
-    removeTask(id);
   }
 
   changePage(page) {
@@ -58,7 +51,7 @@ export class TaskList extends PureComponent {
         </div>
         <div className="tasks-list">
           {
-            tasks.map((task) => <TaskItem key={task.id} task={task} removeItem={this.removeItem} />)
+            tasks.map((task) => <TaskItem key={task.id} task={task} />)
           }
         </div>
         <div className="pagination">
