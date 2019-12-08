@@ -44,10 +44,10 @@ export class TaskList extends PureComponent {
     return (
       <>
         <div className="order">
-          <div>имя пользователя</div>
-          <div>email</div>
+          <div onClick={this.nameOrder}>имя пользователя</div>
+          <div onClick={this.emailOrder}>email</div>
           <div>текст задачи</div>
-          <div>статус</div>
+          <div onClick={this.statusOrder}>статус</div>
         </div>
         <div className="tasks-list">
           {
