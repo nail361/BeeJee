@@ -36,12 +36,15 @@ const Loader = () => {
 };
 
 const mapStateToProps = (state) => {
-  return {
-    tasks: state.tasks,
-    totalTaskCount: state.totalTaskCount,
-    pageSize: state.pageSize,
-    curPage: state.curPage,
-  };
+  // return {
+  //   tasks: state.tasks,
+  //   totalTaskCount: state.totalTaskCount,
+  //   orderFiled: state.orderFiled,
+  //   sortDirection: state.sortDirection,
+  //   pageSize: state.pageSize,
+  //   curPage: state.curPage,
+  // };
+  return {...state};
 };
 
 export class App extends PureComponent {

@@ -8,6 +8,20 @@ export function addTasks(tasks, tasksLength) {
   };
 }
 
+export function changeOrder(orderField) {
+  return {
+    type: types.CHANGE_ORDER_FIELD,
+    orderField,
+  };
+}
+
+export function changeSortDirection(sortDirection) {
+  return {
+    type: types.CHANGE_SORT_DIRECTION,
+    sortDirection,
+  };
+}
+
 export function changeStatus(taskId, status) {
   return {
     type: types.CHANGE_STATUS,

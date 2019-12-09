@@ -6,10 +6,6 @@ import { getTasks } from '../utils/help';
 import '../styles/Tasks.scss';
 
 export class TaskList extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { curPage } = this.props;
 

@@ -39,7 +39,7 @@ export default function tasks(state = initialState, action) {
       sortDirection: action.sortDirection,
       pageSize: state.pageSize,
       curPage: state.curPage,
-    }
+    };
   case types.CHANGE_PAGE:
     return {
       ...state,
