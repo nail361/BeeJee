@@ -7,6 +7,7 @@ export const initialState = {
   sortDirection: 'asc',
   pageSize: 3,
   curPage: 1,
+  isLogin: false,
   isLoading: true,
 };
 
