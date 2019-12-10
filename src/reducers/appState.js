@@ -3,7 +3,7 @@ import * as types from '../actions/ActionTypes';
 export const initialState = {
   tasks: [],
   totalTaskCount: 0,
-  orderFiled: 'id',
+  orderField: 'id',
   sortDirection: 'asc',
   pageSize: 3,
   curPage: 0,
@@ -13,32 +13,21 @@ export default function tasks(state = initialState, action) {
   switch (action.type) {
   case types.ADD_TASKS:
     return {
-      tasks: [
-        ...action.tasks,
-      ],
-      totalTaskCount: action.tasksLength,
-      orderFiled: state.orderFiled,
-      sortDirection: state.sortDirection,
-      pageSize: state.pageSize,
-      curPage: state.curPage,
+      ...state,
+      ...{
+        tasks: [...action.tasks],
+        totalTaskCount: action.totalTaskCount,
+      },
     };
   case types.CHANGE_ORDER_FIELD:
     return {
-      tasks: state.tasks,
-      totalTaskCount: action.tasksLength,
-      orderFiled: action.orderFiled,
-      sortDirection: state.sortDirection,
-      pageSize: state.pageSize,
-      curPage: state.curPage,
+      ...state,
+      orderField: action.orderField,
     };
   case types.CHANGE_SORT_DIRECTION:
     return {
-      tasks: state.tasks,
-      totalTaskCount: action.tasksLength,
-      orderFiled: state.orderFiled,
-      sortDirection: action.sortDirection,
-      pageSize: state.pageSize,
-      curPage: state.curPage,
+      ...state,
+      sortDirection: state.sortDirection === 'asc' ? 'desc' : 'asc',
     };
   case types.CHANGE_PAGE:
     return {

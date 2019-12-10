@@ -36,15 +36,7 @@ const Loader = () => {
 };
 
 const mapStateToProps = (state) => {
-  // return {
-  //   tasks: state.tasks,
-  //   totalTaskCount: state.totalTaskCount,
-  //   orderFiled: state.orderFiled,
-  //   sortDirection: state.sortDirection,
-  //   pageSize: state.pageSize,
-  //   curPage: state.curPage,
-  // };
-  return {...state};
+  return { ...state };
 };
 
 export class App extends PureComponent {
@@ -116,8 +108,6 @@ export class App extends PureComponent {
   }
 
   render() {
-    const { tasks } = this.props;
-
     const {
       isLoading,
       showError,

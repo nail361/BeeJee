@@ -1,10 +1,10 @@
 import * as types from './ActionTypes';
 
-export function addTasks(tasks, tasksLength) {
+export function addTasks(tasks, totalTaskCount) {
   return {
     type: types.ADD_TASKS,
     tasks,
-    tasksLength,
+    totalTaskCount,
   };
 }
 
@@ -15,10 +15,9 @@ export function changeOrder(orderField) {
   };
 }
 
-export function changeSortDirection(sortDirection) {
+export function changeSortDirection() {
   return {
     type: types.CHANGE_SORT_DIRECTION,
-    sortDirection,
   };
 }
 

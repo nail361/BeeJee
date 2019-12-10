@@ -1,9 +1,9 @@
 .order{
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
+  grid-template-columns: 5% 25% 30% 30% 10%;
   align-items: center;
-  width: 600px;
+  width: 700px;
   height: 30px;
 
   div{
@@ -19,9 +19,9 @@
   .task-list__task-item{
     display: grid;
     position: relative;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: 5% 25% 30% 30% 10%;
     align-items: center;
-    width: 600px;
+    width: 700px;
     height: 40px;
     background-color: #fff;
     border-radius: 5px;
@@ -51,4 +51,15 @@
 
 .pagination{
   margin: 30px auto;
+
+  li {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+    cursor: pointer;
+
+    &.active{
+      font-weight: 800;
+    }
+  }
 }

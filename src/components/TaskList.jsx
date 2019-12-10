@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactPaginate from 'react-paginate';
 import PropTypes from 'prop-types';
 import { TaskItem } from './TaskItem';
 import { getTasks } from '../utils/help';
@@ -6,10 +7,23 @@ import { getTasks } from '../utils/help';
 import '../styles/Tasks.scss';
 
 export class TaskList extends PureComponent {
-  componentDidMount() {
-    const { curPage } = this.props;
+  constructor(props) {
+    super(props);
 
-    getTasks('id', 'asc', curPage).then((data) => {
+    const {
+      totalTaskCount,
+      pageSize,
+    } = this.props;
+
+    this.state = {
+      pagesCount: Math.ceil(totalTaskCount / pageSize),
+    };
+  }
+
+  componentDidMount() {
+    const { orderField, sortDirection, curPage } = this.props;
+
+    getTasks(orderField, sortDirection, curPage).then((data) => {
       if (data.status === 'ok') {
         const { addTasks } = this.props;
         addTasks(data.message.tasks, data.message.total_task_count);
@@ -17,53 +31,52 @@ export class TaskList extends PureComponent {
     }).catch((error) => console.error(error));
   }
 
-  changePage(page) {
+  handlePageClick(data) {
+    const page = data.selected;
+    // let offset = Math.ceil(selected * this.props.perPage);
+
     const { changePage } = this.props;
     changePage(page);
   }
 
+  changeOrder(field) {
+    const { orderField, changeOrder, changeSortDirection } = this.props;
+
+    if (orderField === field) changeSortDirection();
+    else changeOrder(field);
+  }
+
   render() {
-    const {
-      tasks,
-      totalTaskCount,
-      pageSize,
-      curPage,
-    } = this.props;
-
-    const pagesCount = Math.ceil(totalTaskCount / pageSize);
-
-    const pageArr = [];
-    for (let index = 0; index < pagesCount; index++) {
-      pageArr.push(index);
-    }
+    const { tasks } = this.props;
+    const { pagesCount } = this.state;
 
     return (
       <>
         <div className="order">
-          <div onClick={this.nameOrder}>имя пользователя</div>
-          <div onClick={this.emailOrder}>email</div>
+          <div onClick={() => this.changeOrder('id')}>id</div>
+          <div onClick={() => this.changeOrder('username')}>имя пользователя</div>
+          <div onClick={() => this.changeOrder('email')}>email</div>
           <div>текст задачи</div>
-          <div onClick={this.statusOrder}>статус</div>
+          <div onClick={() => this.changeOrder('status')}>статус</div>
         </div>
         <div className="tasks-list">
           {
             tasks.map((task) => <TaskItem key={task.id} task={task} />)
           }
         </div>
-        <div className="pagination">
-          {pageArr.map((index) => {
-            return (
-              <button
-                type="button"
-                key={index}
-                className={curPage === index ? 'selected' : ''}
-                onClick={() => this.changePage(index)}
-              >
-                {index + 1}
-              </button>
-            );
-          })}
-        </div>
+        <ReactPaginate
+          previousLabel="<"
+          nextLabel=">"
+          breakLabel="..."
+          breakClassName="break-me"
+          pageCount={pagesCount}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={5}
+          onPageChange={(data) => this.handlePageClick(data)}
+          containerClassName="pagination"
+          subContainerClassName="pages pagination"
+          activeClassName="active"
+        />
       </>
     );
   }
@@ -73,4 +86,13 @@ export default TaskList;
 
 TaskList.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  totalTaskCount: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  addTasks: PropTypes.func.isRequired,
+  changePage: PropTypes.func.isRequired,
+  changeOrder: PropTypes.func.isRequired,
+  changeSortDirection: PropTypes.func.isRequired,
+  curPage: PropTypes.number.isRequired,
+  orderField: PropTypes.string.isRequired,
+  sortDirection: PropTypes.string.isRequired,
 };
