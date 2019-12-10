@@ -6,7 +6,7 @@ export const initialState = {
   orderField: 'id',
   sortDirection: 'asc',
   pageSize: 3,
-  curPage: 0,
+  curPage: 1,
   isLoading: true,
 };
 

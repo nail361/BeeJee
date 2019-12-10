@@ -9,15 +9,29 @@ export function addTasks(tasks, totalTaskCount) {
 }
 
 export function changeOrder(orderField) {
-  return {
-    type: types.CHANGE_ORDER_FIELD,
-    orderField,
+  return (dispatch) => {
+    return new Promise((resolve) => {
+      dispatch(
+        {
+          type: types.CHANGE_ORDER_FIELD,
+          orderField,
+        },
+      );
+      resolve();
+    });
   };
 }
 
 export function changeSortDirection() {
-  return {
-    type: types.CHANGE_SORT_DIRECTION,
+  return (dispatch) => {
+    return new Promise((resolve) => {
+      dispatch(
+        {
+          type: types.CHANGE_SORT_DIRECTION,
+        },
+      );
+      resolve();
+    });
   };
 }
 
@@ -30,9 +44,16 @@ export function changeStatus(taskId, status) {
 }
 
 export function changePage(page) {
-  return {
-    type: types.CHANGE_PAGE,
-    page,
+  return (dispatch) => {
+    return new Promise((resolve) => {
+      dispatch(
+        {
+          type: types.CHANGE_PAGE,
+          page,
+        },
+      );
+      resolve();
+    });
   };
 }
 

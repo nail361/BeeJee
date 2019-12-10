@@ -32,10 +32,6 @@ export class TaskList extends PureComponent {
       curPage,
     } = this.props;
 
-    console.log(curPage);
-    
-    return;
-
     setLoading(true);
 
     getTasks(orderField, sortDirection, curPage).then((data) => {
@@ -50,18 +46,15 @@ export class TaskList extends PureComponent {
   handlePageClick(data) {
     const page = data.selected;
     const { changePage } = this.props;
-    console.log(page);
-    
-    changePage(page);
-    this.fillTasks();
+
+    changePage(page + 1).then(() => this.fillTasks());
   }
 
   changeOrder(field) {
     const { orderField, changeOrder, changeSortDirection } = this.props;
 
-    if (orderField === field) changeSortDirection();
-    else changeOrder(field);
-    this.fillTasks();
+    if (orderField === field) changeSortDirection().then(() => this.fillTasks());
+    else changeOrder(field).then(() => this.fillTasks());
   }
 
   render() {
