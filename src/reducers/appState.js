@@ -7,6 +7,7 @@ export const initialState = {
   sortDirection: 'asc',
   pageSize: 3,
   curPage: 0,
+  isLoading: true,
 };
 
 export default function tasks(state = initialState, action) {
@@ -34,6 +35,12 @@ export default function tasks(state = initialState, action) {
       ...state,
       curPage: action.page,
     };
+
+  case types.SET_LOADING:
+    return {
+      ...state,
+      isLoading: action.isLoading,
+    }
 
   default:
     return state;

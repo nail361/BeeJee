@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/AppActions';
 import Modal from './Modal';
+import Loader from './Loader';
 import AddTaskModal from './AddTaskModal';
 import '../styles/App.scss';
 
@@ -13,30 +14,8 @@ const TaskList = React.lazy(() => import('./TaskList'));
 
 const modalRoot = document.getElementById('modal-root');
 
-const Loader = () => {
-  return (
-    <div className="loader-wrapper">
-      <div className="lds-spinner">
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-      <div className="loader-title">Загрузка...</div>
-    </div>
-  );
-};
-
 const mapStateToProps = (state) => {
-  return { ...state };
+  return { ...state, totalTaskCount: parseInt(state.totalTaskCount, 10) };
 };
 
 export class App extends PureComponent {
@@ -44,7 +23,6 @@ export class App extends PureComponent {
     super(props);
 
     this.state = {
-      isLoading: false,
       showError: false,
       showSuccess: false,
       showAddTask: false,
@@ -57,9 +35,8 @@ export class App extends PureComponent {
   }
 
   onAddTask(name, email, text) {
-    this.setState({
-      isLoading: true,
-    });
+    const { setLoading } = this.props;
+    setLoading(true);
     addTask({
       username: name,
       email,
@@ -70,14 +47,10 @@ export class App extends PureComponent {
       } else {
         this.showMsg('showError');
       }
-      this.setState({
-        isLoading: false,
-      });
+      setLoading(false);
     }).catch((error) => {
       this.showMsg('showError');
-      this.setState({
-        isLoading: false,
-      });
+      setLoading(false);
     });
   }
 
@@ -108,8 +81,8 @@ export class App extends PureComponent {
   }
 
   render() {
+    const { isLoading } = this.props;
     const {
-      isLoading,
       showError,
       showSuccess,
       showAddTask,
@@ -172,4 +145,6 @@ export default connect(
 
 App.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };

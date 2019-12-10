@@ -35,3 +35,10 @@ export function changePage(page) {
     page,
   };
 }
+
+export function setLoading(isLoading) {
+  return {
+    type: types.SET_LOADING,
+    isLoading,
+  }
+}

@@ -21,22 +21,39 @@ export class TaskList extends PureComponent {
   }
 
   componentDidMount() {
-    const { orderField, sortDirection, curPage } = this.props;
+    this.fillTasks();
+  }
+
+  fillTasks() {
+    const {
+      setLoading,
+      orderField,
+      sortDirection,
+      curPage,
+    } = this.props;
+
+    console.log(curPage);
+    
+    return;
+
+    setLoading(true);
 
     getTasks(orderField, sortDirection, curPage).then((data) => {
       if (data.status === 'ok') {
         const { addTasks } = this.props;
         addTasks(data.message.tasks, data.message.total_task_count);
       }
-    }).catch((error) => console.error(error));
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }
 
   handlePageClick(data) {
     const page = data.selected;
-    // let offset = Math.ceil(selected * this.props.perPage);
-
     const { changePage } = this.props;
+    console.log(page);
+    
     changePage(page);
+    this.fillTasks();
   }
 
   changeOrder(field) {
@@ -44,6 +61,7 @@ export class TaskList extends PureComponent {
 
     if (orderField === field) changeSortDirection();
     else changeOrder(field);
+    this.fillTasks();
   }
 
   render() {
@@ -88,6 +106,7 @@ TaskList.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
   totalTaskCount: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
+  setLoading: PropTypes.func.isRequired,
   addTasks: PropTypes.func.isRequired,
   changePage: PropTypes.func.isRequired,
   changeOrder: PropTypes.func.isRequired,
