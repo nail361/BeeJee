@@ -6,17 +6,20 @@ import { getTasks } from '../utils/help';
 
 import '../styles/Tasks.scss';
 
+const getFiledClass = (orderField, sortDirection, field) => {
+  let className = '';
+  if (orderField === field) {
+    className += `active ${sortDirection}`;
+  }
+  return className;
+};
+
 export class TaskList extends PureComponent {
   constructor(props) {
     super(props);
 
-    const {
-      totalTaskCount,
-      pageSize,
-    } = this.props;
-
     this.state = {
-      pagesCount: Math.ceil(totalTaskCount / pageSize),
+      pagesCount: 0,
     };
   }
 
@@ -36,7 +39,12 @@ export class TaskList extends PureComponent {
 
     getTasks(orderField, sortDirection, curPage).then((data) => {
       if (data.status === 'ok') {
-        const { addTasks } = this.props;
+        const { addTasks, pageSize } = this.props;
+
+        this.setState({
+          pagesCount: Math.ceil(data.message.total_task_count / pageSize),
+        });
+
         addTasks(data.message.tasks, data.message.total_task_count);
       }
       setLoading(false);
@@ -58,21 +66,41 @@ export class TaskList extends PureComponent {
   }
 
   render() {
-    const { tasks } = this.props;
+    const { tasks, orderField, sortDirection } = this.props;
     const { pagesCount } = this.state;
 
     return (
       <>
         <div className="order">
-          <div onClick={() => this.changeOrder('id')}>id</div>
-          <div onClick={() => this.changeOrder('username')}>имя пользователя</div>
-          <div onClick={() => this.changeOrder('email')}>email</div>
+          <div
+            className={getFiledClass(orderField, sortDirection, 'id')}
+            onClick={() => this.changeOrder('id')}
+          >
+            id
+          </div>
+          <div
+            className={getFiledClass(orderField, sortDirection, 'username')}
+            onClick={() => this.changeOrder('username')}
+          >
+            имя пользователя
+          </div>
+          <div
+            className={getFiledClass(orderField, sortDirection, 'email')}
+            onClick={() => this.changeOrder('email')}
+          >
+            email
+          </div>
           <div>текст задачи</div>
-          <div onClick={() => this.changeOrder('status')}>статус</div>
+          <div
+            className={getFiledClass(orderField, sortDirection, 'status')}
+            onClick={() => this.changeOrder('status')}
+          >
+            статус
+          </div>
         </div>
         <div className="tasks-list">
           {
-            tasks.map((task) => <TaskItem key={task.id} task={task} />)
+            tasks.map((task) => <TaskItem key={task.id} task={task} {...this.props} />)
           }
         </div>
         <ReactPaginate
@@ -97,7 +125,6 @@ export default TaskList;
 
 TaskList.propTypes = {
   tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  totalTaskCount: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   setLoading: PropTypes.func.isRequired,
   addTasks: PropTypes.func.isRequired,

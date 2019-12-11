@@ -6,6 +6,7 @@ import * as actions from '../actions/AppActions';
 import Modal from './Modal';
 import Loader from './Loader';
 import AddTaskModal from './AddTaskModal';
+import AdminPanel from './Adminpanel';
 import '../styles/App.scss';
 
 import { addTask } from '../utils/help';
@@ -119,6 +120,7 @@ export class App extends PureComponent {
             <AddTaskModal addTask={this.onAddTask} close={this.closeAddTaskWindow} />,
             modalRoot,
           )}
+        <AdminPanel {...this.props} />
         <div className="task-wrapper">
           <Suspense fallback={<Loader />}>
             <TaskList {...this.props} />

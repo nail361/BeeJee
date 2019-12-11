@@ -21,6 +21,25 @@ export default function tasks(state = initialState, action) {
         totalTaskCount: action.totalTaskCount,
       },
     };
+  case types.UPDATE_TASK:
+    return {
+      ...state,
+      ...{
+        tasks: [...state.tasks.map((task) => {
+          if (task.id === action.id) {
+            const newTask = {
+              ...task,
+              ...{
+                text: action.text,
+                status: action.status,
+              },
+            };
+            return newTask;
+          }
+          return task;
+        })],
+      },
+    };
   case types.CHANGE_ORDER_FIELD:
     return {
       ...state,
@@ -37,11 +56,23 @@ export default function tasks(state = initialState, action) {
       curPage: action.page,
     };
 
+  case types.LOGIN:
+    return {
+      ...state,
+      isLogin: true,
+    };
+
+  case types.LOGOUT:
+    return {
+      ...state,
+      isLogin: false,
+    };
+
   case types.SET_LOADING:
     return {
       ...state,
       isLoading: action.isLoading,
-    }
+    };
 
   default:
     return state;
