@@ -12,7 +12,7 @@ import '../styles/AdminPanel.scss';
 const checkAuth = (username, pass) => {
   return loginToServer(username, pass).then((data) => {
     if (data.status === 'ok') {
-      return data.token;
+      return data.message.token;
     }
     return null;
   });
@@ -35,11 +35,12 @@ export default class AdminPanel extends PureComponent {
   }
 
   onLoginClick() {
-    const authToken = checkAuth(this.loginField.value, this.passField.value);
-    if (authToken != null) this.login(authToken);
-    else {
-      this.authError();
-    }
+    checkAuth(this.loginField.value, this.passField.value).then((authToken) => {
+      if (authToken != null) this.login(authToken);
+      else {
+        this.authError();
+      }
+    });
   }
 
   onLogoutClick() {

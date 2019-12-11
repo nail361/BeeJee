@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { getToken, editTask } from '../utils/help';
-import { throws } from 'assert';
 
 const getStatus = (status, isLogin, fun) => {
   return <input type="checkbox" disabled={!isLogin} onChange={fun} checked={status === 10} />;
@@ -56,12 +55,15 @@ export class TaskItem extends PureComponent {
     } = this.props;
     const { text, status } = this.state;
     const editedText = `${text} (отредактировано администратором)`;
-    if (token) {
+    if (token) {      
       setLoading(true);
       editTask(editedText, status, task.id, token).then((data) => {
         if (data.status === 'ok') updateTask(task.id, editedText, status);
         else if (data.message.token) logout();
-        else console.error(data);
+        else {
+          console.error(data);
+          this.returnToDefault();
+        }
 
         this.setState({
           needSave: false,
@@ -70,10 +72,17 @@ export class TaskItem extends PureComponent {
       });
     } else {
       logout();
-      this.setState({
-        needSave: false,
-      });
+      this.returnToDefault();
     }
+  }
+
+  returnToDefault() {
+    const { text, status } = this.props.task;
+    this.setState({
+      needSave: false,
+      text,
+      status,
+    });
   }
 
   render() {

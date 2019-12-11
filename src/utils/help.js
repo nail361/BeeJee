@@ -42,7 +42,7 @@ export const addTask = async (data) => {
 };
 
 export const editTask = async (text, status, id, token) => {
-  const url = `https://uxcandy.com/~shapoval/test-task-backend/v2/edit/:${id}?developer=${developerName}`;
+  const url = `https://uxcandy.com/~shapoval/test-task-backend/v2/edit/${id}?developer=${developerName}`;
 
   const form = new FormData();
   form.append('text', text);
@@ -95,7 +95,7 @@ export const loginToServer = async (username, password) => {
 };
 
 export const saveToken = (token) => {
-  sessionStorage.setItem('authToken', JSON.stringify(token));
+  sessionStorage.setItem('authToken', token);
 };
 
 export const getToken = () => {
