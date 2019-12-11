@@ -54,8 +54,15 @@ export class TaskItem extends PureComponent {
       updateTask,
     } = this.props;
     const { text, status } = this.state;
-    const editedText = `${text} (отредактировано администратором)`;
-    if (token) {      
+    let editedText = text;
+
+    if (task.text !== text) {
+      editedText += ' (отредактировано администратором)';
+      this.setState({
+        text: editedText,
+      });
+    }
+    if (token) {
       setLoading(true);
       editTask(editedText, status, task.id, token).then((data) => {
         if (data.status === 'ok') updateTask(task.id, editedText, status);
