@@ -95,15 +95,15 @@ export const loginToServer = async (username, password) => {
 };
 
 export const saveToken = (token) => {
-  sessionStorage.setItem('authToken', token);
+  localStorage.setItem('authToken', token);
 };
 
 export const getToken = () => {
-  return sessionStorage.getItem('authToken');
+  return localStorage.getItem('authToken');
 };
 
 export const deleteToken = () => {
-  sessionStorage.removeItem('authToken');
+  localStorage.removeItem('authToken');
 };
 
 export const setCookie = (key, value) => {

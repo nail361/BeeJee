@@ -72,12 +72,12 @@ export class TaskList extends PureComponent {
     return (
       <>
         <div className="order">
-          <div
+          {/* <div
             className={getFiledClass(orderField, sortDirection, 'id')}
             onClick={() => this.changeOrder('id')}
           >
             id
-          </div>
+          </div> */}
           <div
             className={getFiledClass(orderField, sortDirection, 'username')}
             onClick={() => this.changeOrder('username')}

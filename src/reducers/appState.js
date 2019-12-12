@@ -3,7 +3,7 @@ import * as types from '../actions/ActionTypes';
 export const initialState = {
   tasks: [],
   totalTaskCount: 0,
-  orderField: 'id',
+  orderField: 'username',
   sortDirection: 'asc',
   pageSize: 3,
   curPage: 1,

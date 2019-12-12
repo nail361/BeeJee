@@ -99,7 +99,7 @@ export class TaskItem extends PureComponent {
     return (
       <div className="task">
         <div className="task-list__task-item">
-          <input readOnly value={task.id} />
+          {/* <input readOnly value={task.id} /> */}
           <input readOnly value={task.username} />
           <input readOnly value={task.email} />
           <input readOnly={!isLogin} onChange={this.onTaskChange} value={text} />

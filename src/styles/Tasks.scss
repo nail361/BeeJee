@@ -1,7 +1,7 @@
 .order{
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 5% 25% 30% 30% 10%;
+  grid-template-columns: 25% 30% 35% 10%;
   align-items: center;
   width: 700px;
   height: 30px;
@@ -36,7 +36,7 @@
 .task-list__task-item{
   display: grid;
   position: relative;
-  grid-template-columns: 5% 25% 30% 30% 10%;
+  grid-template-columns: 25% 30% 35% 10%;
   align-items: center;
   width: 700px;
   height: 40px;
